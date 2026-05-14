@@ -1,0 +1,569 @@
+
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>বাংলা MCQ Quiz Pro</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Hind Siliguri', sans-serif;
+}
+
+body{
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+    background:linear-gradient(-45deg,#0f2027,#203a43,#2c5364,#6a11cb,#2575fc);
+    background-size:400% 400%;
+    animation:bgAnimation 12s ease infinite;
+    padding:20px;
+}
+
+/* Animated Background */
+
+@keyframes bgAnimation{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+}
+
+/* Floating Circles */
+
+.circle{
+    position:absolute;
+    border-radius:50%;
+    background:rgba(255,255,255,0.08);
+    animation:float 12s linear infinite;
+}
+
+.circle:nth-child(1){
+    width:200px;
+    height:200px;
+    left:10%;
+    top:10%;
+}
+
+.circle:nth-child(2){
+    width:300px;
+    height:300px;
+    right:10%;
+    bottom:10%;
+    animation-duration:15s;
+}
+
+.circle:nth-child(3){
+    width:150px;
+    height:150px;
+    left:40%;
+    bottom:5%;
+    animation-duration:18s;
+}
+
+@keyframes float{
+    0%{
+        transform:translateY(0px) rotate(0deg);
+    }
+    50%{
+        transform:translateY(-40px) rotate(180deg);
+    }
+    100%{
+        transform:translateY(0px) rotate(360deg);
+    }
+}
+
+/* Quiz Box */
+
+.quiz-container{
+    position:relative;
+    width:100%;
+    max-width:700px;
+    padding:35px;
+    border-radius:30px;
+    backdrop-filter:blur(20px);
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    box-shadow:0 15px 40px rgba(0,0,0,0.35);
+    color:white;
+    z-index:10;
+    animation:popup 1s ease;
+}
+
+@keyframes popup{
+    from{
+        opacity:0;
+        transform:scale(0.7);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+h1{
+    text-align:center;
+    margin-bottom:25px;
+    font-size:40px;
+    font-weight:700;
+    text-shadow:0 0 15px rgba(255,255,255,0.5);
+}
+
+/* Progress */
+
+.progress-box{
+    width:100%;
+    height:12px;
+    background:rgba(255,255,255,0.2);
+    border-radius:20px;
+    overflow:hidden;
+    margin-bottom:25px;
+}
+
+.progress-bar{
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,#00f260,#0575e6);
+    transition:0.5s;
+}
+
+/* Question */
+
+.question{
+    font-size:28px;
+    margin-bottom:25px;
+    line-height:1.5;
+    animation:fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateX(30px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+/* Options */
+
+.options button{
+    width:100%;
+    padding:16px;
+    margin:12px 0;
+    border:none;
+    border-radius:16px;
+    font-size:20px;
+    cursor:pointer;
+    color:white;
+    background:rgba(255,255,255,0.12);
+    border:1px solid rgba(255,255,255,0.2);
+    transition:0.35s;
+    position:relative;
+    overflow:hidden;
+}
+
+.options button:hover{
+    transform:translateY(-4px) scale(1.02);
+    background:rgba(255,255,255,0.2);
+    box-shadow:0 10px 25px rgba(0,0,0,0.3);
+}
+
+.options button::before{
+    content:'';
+    position:absolute;
+    top:0;
+    left:-100%;
+    width:100%;
+    height:100%;
+    background:rgba(255,255,255,0.2);
+    transition:0.5s;
+}
+
+.options button:hover::before{
+    left:100%;
+}
+
+/* Correct / Wrong */
+
+.correct{
+    background:linear-gradient(45deg,#00b09b,#96c93d)!important;
+    animation:pulse 0.5s;
+}
+
+.wrong{
+    background:linear-gradient(45deg,#ff416c,#ff4b2b)!important;
+    animation:shake 0.4s;
+}
+
+@keyframes shake{
+    0%{transform:translateX(0);}
+    25%{transform:translateX(-8px);}
+    50%{transform:translateX(8px);}
+    75%{transform:translateX(-8px);}
+    100%{transform:translateX(0);}
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.05);}
+    100%{transform:scale(1);}
+}
+
+/* Next Button */
+
+#nextBtn{
+    width:100%;
+    margin-top:25px;
+    padding:16px;
+    border:none;
+    border-radius:16px;
+    font-size:20px;
+    font-weight:bold;
+    color:white;
+    cursor:pointer;
+    background:linear-gradient(45deg,#fc466b,#3f5efb);
+    transition:0.3s;
+    display:none;
+}
+
+#nextBtn:hover{
+    transform:scale(1.03);
+    box-shadow:0 10px 25px rgba(0,0,0,0.4);
+}
+
+/* Score */
+
+#score{
+    text-align:center;
+    font-size:35px;
+    font-weight:bold;
+    animation:zoom 1s ease;
+}
+
+@keyframes zoom{
+    from{
+        opacity:0;
+        transform:scale(0.5);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+/* Mobile */
+
+@media(max-width:600px){
+
+    h1{
+        font-size:30px;
+    }
+
+    .question{
+        font-size:22px;
+    }
+
+    .options button{
+        font-size:18px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="circle"></div>
+<div class="circle"></div>
+<div class="circle"></div>
+
+<div class="quiz-container">
+
+    <h1>বাংলা MCQ Quiz</h1>
+
+    <div class="progress-box">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <div id="quiz">
+
+        <div class="question" id="question"></div>
+
+        <div class="options" id="options"></div>
+
+        <button id="nextBtn">পরবর্তী প্রশ্ন</button>
+
+    </div>
+
+    <div id="score"></div>
+
+</div>
+
+<script>
+
+const quizData = [
+
+{
+    question:"বাংলা ভাষা দিবস কবে পালিত হয়?",
+    options:["২১ ফেব্রুয়ারি","২৬ মার্চ","১৬ ডিসেম্বর","১৪ এপ্রিল"],
+    answer:"২১ ফেব্রুয়ারি"
+},
+
+{
+    question:"বাংলাদেশের জাতীয় ফুল কোনটি?",
+    options:["গোলাপ","শাপলা","সূর্যমুখী","জবা"],
+    answer:"শাপলা"
+},
+
+{
+    question:"বাংলাদেশের জাতীয় ফল কোনটি?",
+    options:["আম","কাঁঠাল","লিচু","তরমুজ"],
+    answer:"কাঁঠাল"
+},
+
+{
+    question:"বাংলাদেশ স্বাধীন হয় কত সালে?",
+    options:["১৯৭১","১৯৫২","১৯৪৭","১৯৯০"],
+    answer:"১৯৭১"
+},
+
+{
+    question:"প্রকৃতিতে সবচেয়ে শক্ত পদার্থ কোনটি?",
+    options:["পিতল","হীরা","ইস্পাত","গ্রানাইট"],
+    answer:"হীরা"
+},
+
+{
+    question:"ফারেনহাইট ও সেলসিয়াসের স্কেলে কত ডিগ্রি তাপমাত্রায় সমান তাপমাত্রা নির্দেশ করে?",
+    options:["০°", "১০০°", "৪°", "-৪০°"],
+    answer:"-৪০°"
+},
+
+{
+    question:"অগ্ন্যাশয় থেকে নির্গত চিনির বিপাক নিয়ন্ত্রণকারী হরমোন কোনটি?",
+    options:["পেনিসিলিন", "ইনসুলিন", "ফোলিক এসিড", "অ্যামিনো এসিড"],
+    answer:"ইনসুলিন"
+},
+
+{
+    question:"টেস্টিং সল্ট-এর রাসায়নিক নাম কি?",
+    options:["সোডিয়াম বাইকার্বোনেট","সোডিয়াম গুটামেট","পটাশিয়াম বাইকার্বোনেট","সোডিয়াম মনোগুটামেট"],
+    answer:"সোডিয়াম গুটামেট"
+},
+
+{
+    question:"আকাশ মেঘলা থাকলে গরম বেশি লাগে কেন?",
+    options:["মেঘ উত্তম তাপ পরিবাহক", "সূর্যালোকের অতিবেগুনি রশ্মির প্রভাবে মেঘ তাপ উৎপন্ন করে", "বজ্রপাতের ফলে তাপ উৎপন্ন হয় বলে।্যাখ্যত", "মেঘ পৃথিবী পৃষ্ঠ থেকে বিকীর্ণ তাপকে ওপরে যেতে বাধা দেয় বলে"],
+    answer:"মেঘ পৃথিবী পৃষ্ঠ থেকে বিকীর্ণ তাপকে ওপরে যেতে বাধা দেয় বলে"
+},
+
+{
+    question:"মাটির পাত্রে পানি ঠাণ্ডা থাকে কেন?",
+    options:["মাটির পাত্র পানি থেকে তাপ শোষণ করে", "মাটির পাত্র ভালো তাপ পরিবাহী", "মাটির পাত্র পানির বাষ্পীভবনে সাহায্য করে", "মাটির পাত্র তাপ কুপরিবাহীপ"],
+    answer:"মাটির পাত্র পানির বাষ্পীভবনে সাহায্য করে"
+},
+
+{
+    question:"জীবের বংশগতির বৈশিষ্ট্য বহন করে-",
+    options:["নিউক্লিয়াস", "নিউক্লিওলাস", "ক্রোমোজোম", "নিউক্লিওপ্লাজম"],
+    answer:"ক্রোমোজোম"
+},
+
+{
+    question:"প্রাকৃতিক কোন উৎস থেকে সবচেয়ে মৃদু পানি পাওয়া যায়?",
+    options:["সাগর", "হ্রদ", "নদী", "বৃষ্টি"],
+    answer:"বৃষ্টি"
+},
+
+{
+    question:"যখন সূর্য ও পৃথিবীর মধ্যে চাঁদ অবস্থান করে তখন হয়-",
+    options:[" চন্দ্রগ্রহণ", "সূর্যগ্রহণ", "অমাবস্যা", "পূর্ণিমা"],
+    answer:"সূর্যগ্রহণ"
+},
+
+{
+    question:"বিষধর সাপে কামড়ালে ক্ষতস্থানে থাকে-",
+    options:["পাশাপাশি দুটো দাঁতের দাগ", "অনেকগুলো ছোট ছোট দাঁতের দাগ", "ক্ষতস্থান থেকে প্রচুর রক্ষপাত হতে থাকে", "ক্ষতস্থানে প্রচুর বিষ লেগে থাকে"],
+    answer:"পাশাপাশি দুটো দাঁতের দাগ"
+},
+
+{
+    question:"১বাংলা ভাষার আদি নিদর্শন চর্যাপদ আবিষ্কৃত হয় কত সালে?",
+    options:["১৯০৭","১৯০৯","১৯০৩","১৯১৬"],
+    answer:"১৯০৭"
+},
+
+{
+    question:"নিচের কোটি শরন্দ্র চট্টোপাধ্যায়ের ছদ্মনাম?",
+    options:["বীরবল","অনিলা দেবী","ভিমরুল","যাযাবর"],
+    answer:"অনিলা দেবী"
+},
+
+{
+    question:"আধ্যাত্মিকা' উপন্যাসের লেখক কে?",
+    options:["প্যারীচাঁদ মিত্র"," বঙ্কিমচন্দ্র চট্টোপাধ্যায়","দামোদর বন্দ্যোপাধ্যায়","শরচ্চন্দ্র চট্টোপাধ্যায়"],
+    answer:"প্যারীচাঁদ মিত্র"
+},
+
+{
+    question:"অনীক' শব্দের অর্থ-",
+    options:["সূর্য","সমুদ্র","যুদ্ধক্ষেত্র","সৈনিক"],
+    answer:"যুদ্ধক্ষেত্র"
+},
+
+{
+    question:"Anatomy শব্দের অর্থ-",
+    options:["সাদৃশ্য","স্নায়ুতন্ত্র","শারীরবিদ্যা","অঙ্গ-সঞ্চালন"],
+    answer:"শারীরবিদ্যা"
+},
+
+{
+    question:"কোন্ কবি নিজেকে বাঙালি বলে পরিচয় দিয়েছেন?",
+    options:["গোবিন্দ দাস","কায়কোবাদ","কাহ্ন পা","ভুসুকু পা"],
+    answer:"ভুসুকু পা"
+},
+
+{
+    question:"'আফতাব' শব্দের সমার্থ কোনটি?",
+    options:["অর্ণব","রাতুল","অর্ক","জলধি"],
+    answer:"অর্ক"
+},
+
+{
+    question:"বাগাড়ম্বর শব্দের সন্ধি-বিচ্ছেদ-",
+    options:["বাগ + অম্বর",",বাগ+ আড়ম্বর","বাক্ + অম্বর","বাক্ + আড়ম্বর"],
+    answer:"বাক্ + আড়ম্বর"
+},
+
+{
+    question:"রবীন্দ্রনাথের 'সোনার তরী' কবিতা কোন্ ছন্দে রচিত?",
+    options:["স্বরবৃত্ত","মন্দাক্রান্তা","অক্ষরবৃত্ত","মাত্রাবৃত্ত"],
+    answer:"মাত্রাবৃত্ত"
+},
+
+{
+    question:"নিচের কোনটি মীর মশাররফ হোসেনের জন্ম-মৃত্যু সাল?",
+    options:["১৮৪৭-১৯১১","১৮৫২-১৯১২","১৮৫৭-১৯১১","১৮৪৭-১৯১২"],
+    answer:"১৮৪৭-১৯১২"
+},
+
+
+
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+
+const questionEl = document.getElementById("question");
+const optionsEl = document.getElementById("options");
+const nextBtn = document.getElementById("nextBtn");
+const scoreEl = document.getElementById("score");
+const progressBar = document.getElementById("progressBar");
+
+function loadQuestion(){
+
+    resetState();
+
+    const currentQuiz = quizData[currentQuestion];
+
+    questionEl.innerText = currentQuiz.question;
+
+    let progress = ((currentQuestion) / quizData.length) * 100;
+    progressBar.style.width = progress + "%";
+
+    currentQuiz.options.forEach(option=>{
+
+        const button = document.createElement("button");
+
+        button.innerText = option;
+
+        button.addEventListener("click",()=>{
+            selectAnswer(button,currentQuiz.answer);
+        });
+
+        optionsEl.appendChild(button);
+    });
+
+}
+
+function resetState(){
+
+    nextBtn.style.display = "none";
+    optionsEl.innerHTML = "";
+
+}
+
+function selectAnswer(button,correctAnswer){
+
+    const buttons = optionsEl.querySelectorAll("button");
+
+    buttons.forEach(btn=>{
+
+        btn.disabled = true;
+
+        if(btn.innerText === correctAnswer){
+            btn.classList.add("correct");
+        }
+
+    });
+
+    if(button.innerText === correctAnswer){
+
+        score++;
+
+    }else{
+
+        button.classList.add("wrong");
+
+    }
+
+    nextBtn.style.display = "block";
+
+}
+
+nextBtn.addEventListener("click",()=>{
+
+    currentQuestion++;
+
+    if(currentQuestion < quizData.length){
+
+        loadQuestion();
+
+    }else{
+
+        showScore();
+
+    }
+
+});
+
+function showScore(){
+
+    document.getElementById("quiz").style.display = "none";
+
+    progressBar.style.width = "100%";
+
+    scoreEl.innerHTML = `
+        🎉 আপনার স্কোর <br><br>
+        ${score} / ${quizData.length}
+    `;
+}
+
+loadQuestion();
+
+</script>
+
+</body>
+</html>
